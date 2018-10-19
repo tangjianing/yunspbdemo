@@ -1,0 +1,159 @@
+* {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+}
+
+html {
+	overflow-x: hidden
+}
+
+body {
+	overflow-x: hidden
+}
+
+.container {
+	margin: 0 auto;
+	font-family: "微软雅黑";
+}
+
+/*超出范围显示省略号*/
+
+.ellipsis-own {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+}
+
+/*隐藏滚动条*/
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+/*标签类型*/
+
+#tip>div.col-xs-12.col-sm-12.col-md-12.col-lg-12>div.row {
+	padding-top: 6%;
+	text-align: center !important;
+}
+
+.tip-all{
+	color: #FFF !important;
+	min-height: 90px;
+	text-align: center;
+	margin-top: 5%;
+	padding-top: 1%;
+	background: rgba(157, 157, 157, 0.9) !important;
+}
+
+#tip>div.col-xs-12.col-sm-12.col-md-12.col-lg-12>div.row>div.col-xs-6.col-sm-6.col-md-6.col-lg-6:last-child {
+	padding-top: 5% !important;
+}
+
+#tip {
+	color: #676767;
+}
+
+.tip-style{
+	background: rgba(255, 255, 255, 0.5) !important;
+	min-height: 100px;
+}
+
+/*中间模块*/
+
+.middle-own {
+	background: rgba(255, 255, 255, 0.5);
+	height: 440px;
+	padding: 1%;
+}
+
+.module {
+	height: 450px;
+	width: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	margin-top: 1%;
+}
+
+div.module>div.row {
+	padding: 0 4%;
+	margin-top: 2%;
+}
+
+div.module>div.row>div.col-xs-10.col-sm-10.col-md-10.col-lg-10 {
+	background: #FFF;
+	height: 95px;
+	color: #555;
+}
+div.module>div.row>div.col-xs-10.col-sm-10.col-md-10.col-lg-10>h4>span:first-child{
+	font-size: 30px;
+}
+div.module>div.row>div.col-xs-2.col-sm-2.col-md-2.col-lg-2 {
+	text-align: center;
+	height: 95px;
+	padding-top: 2%;
+	color: #FFF;
+}
+
+/*圆点tip*/
+
+.circle-tip {
+	z-index: 2;
+	position: absolute;
+	background: #676766;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	left: 5%;
+	top: 3%;
+}
+
+/*tip标签*/
+
+.title-tip {
+	height: 40px;
+	width: 20%;
+	background: #FFF;
+	margin-left: 2%;
+	margin-top: 0%;
+	text-align: center;
+	border-radius: 5px;
+	color: #676766;
+	box-shadow: 0 3px 3px #888585;
+	padding-bottom: 2%;
+	cursor: default;
+}
+
+/*arrow*/
+.triangle-left{
+	position: absolute;
+	left: 0;
+	width: 0px;
+	height: 0px;
+	color: white;
+	text-align: center;
+	border-top: 12px solid transparent;
+	border-left: 24px solid rgba(255, 255, 255, 0.5);;
+	border-bottom: 12px solid transparent;
+}
+#triangle div.triangle-left:nth-child(1){
+	top: 7%;
+}
+#triangle div.triangle-left:nth-child(2){
+	top: 28%;
+	display: none;
+}
+#triangle div.triangle-left:nth-child(3){
+	top: 49%;
+	display: none;
+}
+#triangle div.triangle-left:nth-child(4){
+	top: 71%;
+	display: none;
+}
+#triangle div.triangle-left:nth-child(5){
+	top: 92%;
+	display: none;
+}

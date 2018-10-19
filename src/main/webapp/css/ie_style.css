@@ -1,0 +1,10 @@
+.personalInfo_content .member_pic{
+    width:194px;
+    height: 194px;
+    margin: 3px;
+    position: relative;
+    line-height:194px;
+    *display: block;
+ 	*font-size: 175px;/*约为高度的0.873，200*0.873 约为175*/
+ 	*font-family:Arial
+}

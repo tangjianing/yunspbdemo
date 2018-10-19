@@ -1,0 +1,1064 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.dao.OpinionDAO">
+   <!-- 常用意见    通用设置 增 -->
+   <insert id="addOpinionType" useGeneratedKeys="true">
+		<selectKey order="AFTER" keyProperty="id" resultType="int">
+			select last_insert_id()
+		</selectKey>
+		insert into t_optest(opinion,biz_type,uid,status,create_date,tenentid) values (#{opinion},#{biz_type},#{uid},'0',#{create_date},#{tenentid})
+	</insert>
+	
+	<delete id="deleOpinionType1">
+	    update t_optest set status='1',modify_date=#{modify_date} where id=#{id}
+	</delete>
+	
+    <select id="queryAllOpinionType1" resultType="Optest">
+	select * from t_optest where uid=#{uid} and biz_type="1" and status='0' order by id desc
+	</select>
+
+	<update id="updateOpinionType">
+	     update t_optest set opinion=#{opinion},modify_date=#{modify_date} where uid=#{uid}
+	</update>
+	<select id="queryAccountNumber" resultType="AccountInfo">
+	SELECT
+		a.account_id,
+		a.root_dir,
+		a.quota,
+		DATE_FORMAT(max(b.dt),"%Y-%m-%d %H:%i:%s") dt,
+		b.num_mb,
+		b.num_files,
+		c.user_name
+	FROM
+		account_table a
+	LEFT JOIN stat_table b ON a.account_id = b.account_id
+	LEFT JOIN user_table c ON a.user_id = c.user_id
+	GROUP BY
+		(account_id)
+	</select>
+	<select id="secletGraphicInfo" resultType="AccountInfo">
+		SELECT
+			account_id,
+			DATE_FORMAT(dt, '%Y-%m') dt,
+			min(num_mb) num_mb
+		FROM
+			stat_table
+		WHERE
+			account_id = #{account_id}
+		GROUP BY
+			DATE_FORMAT(dt, '%Y-%m'),
+			account_id
+	</select>
+	<select id="secletAccountStatus" resultType="AccountInfo">
+		SELECT
+			account_id
+		FROM
+			account_table
+		WHERE
+			user_id = 1
+		ORDER BY
+			account_id ASC
+	</select>
+	<select id="secletGraphicCountInfo" resultType="AccountInfo">
+		SELECT
+			account_id,
+			num_mb
+		FROM
+			(
+				SELECT
+					account_id,
+					DATE_FORMAT(dt, '%Y-%m') dt,
+					min(num_mb) num_mb
+				FROM
+					stat_table
+				GROUP BY
+					DATE_FORMAT(dt, '%Y-%m'),
+					account_id
+			) a
+		WHERE
+			a.dt = #{dt}
+	</select>
+	<!--用户初次登录记录用户信息  -->
+	 <insert id="insertUserInfo" useGeneratedKeys="true">
+		insert into 
+		account_table(uid,email,name,dep_org) 
+		values 
+		(#{umtId},#{email},#{truename},#{dep_org})
+	</insert>
+	<!--查询用户表中是否存在用户信息  -->
+	<select id="getUserLength" resultType="AccountInfo">
+		SELECT
+			*
+		FROM
+			account_table
+		WHERE
+			uid = #{account_id}
+	</select>
+	<!--查询用户创建的组织信息  -->
+	<select id="getOrgInfo" resultType="map">
+		SELECT
+			uid,
+			name,
+			comments
+		FROM
+			org_table
+		WHERE
+			admin = #{umtId}
+	</select>
+	<!--用户创建组织信息  -->
+	 <insert id="addOrgInfo" useGeneratedKeys="true">
+		insert into 
+		org_table(name,admin,comments,dt_created,support_unit,contact_person,contact_phone) 
+		values 
+		(#{orgName},#{umtId},#{comments},now(),#{supportUnit},#{contact_person},#{contact_phone})
+	</insert>
+	 <insert id="addResource" useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey order="AFTER" keyProperty="id" resultType="int">
+			select last_insert_id()  
+		</selectKey>
+		insert into resource_table(org_id,pool_id,params,dt_start,dt_expired,comments,order_id) values (#{org_id},#{pool_id},#{params},#{dt_start},#{dt_expired},#{comments},#{order_id})
+	</insert>
+	<!--创建订单信息  -->
+	<insert id="addOrder" useGeneratedKeys="true">
+		<selectKey order="AFTER" keyProperty="orderId" resultType="int">
+			select last_insert_id()  
+		</selectKey>
+		insert into 
+		order_table(id,dt_created) 
+		values 
+		(#{order_id},now())
+	</insert>
+	<!--查询用户创建的有效的组织信息  -->
+	<select id="showOrgInfo" resultType="map">
+		SELECT
+			a.uid,
+			a.`name`,
+			b.params,
+			a.comments,
+			b.uid reduid,
+			b.valid,
+			CASE
+		WHEN b.valid = 'Y' THEN
+			'通过'
+		WHEN b.valid = 'N' THEN
+			'未通过'
+		ELSE
+			'待审核'
+		END validname
+		FROM
+			org_table a
+		LEFT JOIN resource_table b ON a.uid = b.org_id
+		LEFT JOIN resource_pool_table c ON b.pool_id = c.uid
+		WHERE
+			a.admin = #{umtId}
+		AND b.params != ""
+		AND c.category = 1
+		ORDER BY
+			validname DESC
+		
+	</select>
+	<!--查询用户表中是否存在用户信息  -->
+	<select id="getAccountLength" resultType="AccountInfo">
+		SELECT
+			*
+		FROM
+			account_table
+		WHERE
+			uid = #{account_id}
+	</select>
+	<!--账号表创建账号信息  -->
+	<insert id="addAccountInfo" useGeneratedKeys="true">
+		insert into 
+		org_account_table(org_id,account_id,admin_type,psd) 
+		values 
+		(#{orgId},#{account_id},#{adminType},#{password})
+	</insert>
+	<!--用户资源表创建账号信息  -->
+	<insert id="addAccountResInfo" useGeneratedKeys="true">
+		insert into 
+		sub_resource_table(parent_id,account_id,params,valid) 
+		values 
+		(#{reduid},#{account_id},#{params},'Y')
+	</insert>
+	<!-- <if test="searchKey != null and searchKey != ''">
+							AND( c.account_id LIKE '%${searchKey}%'
+									OR g.`name` LIKE '%${searchKey}%'
+									OR f.`name` LIKE '%${searchKey}%'
+									OR g.dep_org LIKE '%${searchKey}%'
+								)
+						</if> -->
+	<!--查询审批列表  -->
+	<select id="checkInfo" resultType="map">
+		SELECT 
+			DISTINCT a.id,
+			DATE_FORMAT(a.dt_created, '%Y-%m-%d') dt_created,
+			a.comments,
+			CASE
+		WHEN b.valid = 'Y' THEN
+			'通过'
+		WHEN b.valid = 'N' THEN
+			'未通过'
+		ELSE
+			'待审核'
+		END valid,
+		 b.org_id,
+		 d.`name`,
+		 d.uid applyId,
+		 c.contact_person,
+		 c.contact_phone,
+		 d.email
+		FROM
+			order_table a
+		LEFT JOIN resource_table b ON a.id = b.order_id
+		LEFT JOIN org_table c ON b.org_id = c.uid
+		LEFT JOIN account_table d ON c.admin = d.uid
+		WHERE b.pool_id=3
+		<if test="secOrderId != null and secOrderId != ''">
+			AND a.id LIKE '%${secOrderId}%'
+		</if>
+		<if test="applyName != null and applyName != ''">
+			AND d.`name` LIKE '%${applyName}%'
+		</if>
+     	 ORDER BY valid ASC ,  dt_created DESC
+	</select>
+	<!-- 审批后，修改订单状态 -->
+	<update id="updateOrderInfo">
+	     update order_table set comments=#{comments},dt_verified=now() where id=#{uid}
+	</update>
+	<!-- 审批后，修改组织资源状态 -->
+	<update id="updateResInfo">
+	     update resource_table set valid=#{valid} where order_id=#{uid}
+	</update>
+	<!--查询用户名下的组织  -->
+	<select id="orgInfoList" resultType="map">
+		SELECT
+			a.uid,
+			a.`name`
+		FROM
+			org_table a
+		WHERE
+		a.admin = #{umtId}
+	</select>
+	<!--查询用户名下的组织账号信息  -->
+	<select id="showAccountInfo" resultType="map">
+		SELECT * FROM
+			(SELECT
+				@rowNo := @rowNo + 1 AS rn,
+				n.*
+			FROM
+				(
+					SELECT
+						a.uid,
+						a.`name`,
+						b.params,
+						a.comments,
+						b.uid reduid,
+						c.uid reduids,
+						c.account_id,
+						c.params accquater,
+						ROUND(((d.num_mb) / 1024), 2) num_mb,
+						
+						DATE_FORMAT(d.dt, '%Y-%m-%d') dt,
+						(d.num_files) num_files,
+						f.`name` username,
+						g.dep_org,
+						g.`name` truename
+					FROM
+						org_table a
+					LEFT JOIN resource_table b ON a.uid = b.org_id
+					LEFT JOIN sub_resource_table c ON b.uid = c.parent_id
+					LEFT JOIN newest_storage_stat_table d ON c.uid = d.ref_resource
+					LEFT JOIN account_table f ON a.admin = f.uid
+					LEFT JOIN account_table g ON c.account_id = g.uid
+					WHERE
+						c.account_id != ''
+						AND b.uid = #{uid}
+						<if test="searchKey != null and searchKey != ''">
+							AND( c.account_id LIKE '%${searchKey}%'
+									OR g.`name` LIKE '%${searchKey}%'
+									OR f.`name` LIKE '%${searchKey}%'
+									OR g.dep_org LIKE '%${searchKey}%'
+								)
+						</if>
+						<if test="type ==1">
+							ORDER BY d.num_mb DESC
+						</if>
+						<if test="type ==-1">
+							ORDER BY d.num_mb ASC 
+						</if>
+						<if test="fileType ==-1">
+							ORDER BY d.num_files DESC 
+						</if>
+						<if test="fileType ==1">
+							ORDER BY d.num_files ASC 
+						</if>
+						<if test="nameType ==-1">
+							ORDER BY CONVERT(c.account_id USING GBK) ASC
+						</if>
+						<if test="nameType ==1">
+							ORDER BY CONVERT(c.account_id USING GBK) DESC 
+						</if>
+				) n,
+				(SELECT @rowNo := 0) T4 
+			)m
+				
+			<if test="start != null and start != ''">
+				where m.rn between ${start} and ${end}
+			</if>
+		
+	</select>
+	<!--查询用户名下管理的组织  -->
+	<select id="mangeOrgInfo" resultType="map">
+		<!-- SELECT
+			a.resource_id uid,
+			a.num_users usernumber,
+			a.usage_gb,
+			f.`name`,
+			f.admin ,
+			e.params,
+			DATE_FORMAT(e.dt_start, '%Y-%m-%d') dt_start,
+				DATE_FORMAT(e.dt_expired, '%Y-%m-%d') dt_expired,
+			f.uid orgId
+		FROM
+			(
+				SELECT
+					c.parent_id AS resource_id,
+                   (sum(d.num_mb)) / 1024 AS usage_gb,
+				    count(*) AS num_users
+				FROM
+					sub_resource_table c LEFT JOIN
+					newest_storage_stat_table d
+				ON
+					c.uid = d.ref_resource
+				GROUP BY
+					c.parent_id
+			) a,
+			resource_table e,
+			org_table f,
+            resource_pool_table g
+		WHERE
+			a.resource_id = e.uid
+		AND e.org_id = f.uid
+		AND e.pool_id=g.uid
+		AND e.valid='Y'
+		AND g.category=1 -->
+		SELECT
+			a.resource_id uid,
+			a.num_users usernumber,
+			f.`name`,
+			f.admin,
+			e.params,
+			DATE_FORMAT(e.dt_start, '%Y-%m-%d') dt_start,
+			DATE_FORMAT(e.dt_expired, '%Y-%m-%d') dt_expired,
+			f.uid orgId
+		FROM
+			(
+				SELECT
+					count(*) AS num_users,
+					n.org_id resource_id
+				FROM
+					org_account_table n
+				GROUP BY
+					n.org_id
+			) a,
+			resource_table e,
+			org_table f,
+			resource_pool_table g
+		WHERE
+			a.resource_id = e.org_id
+		AND e.org_id = f.uid
+		AND e.pool_id = g.uid
+		AND e.valid = 'Y'
+		AND g.category = 1
+		<if test="umtId != null and umtId !=''" >  
+			AND	f.admin  = #{umtId}  
+		</if>
+		
+	</select>
+	<!--查询用户名下管理的组织z的柱形信息展示  -->
+	<select id="getDataInfo" resultType="map">
+		SELECT
+			a.uid,
+			a.`name`,
+			f.`name` username,
+			ROUND(((d.num_mb)/1024),2) num_mb,
+			
+			b.params,
+			a.comments,
+			b.uid reduid,
+			c.uid reduids,
+			c.account_id,
+			c.params accquater,
+			DATE_FORMAT(d.dt, '%Y-%m-%d') dt,
+			d.num_files
+		FROM
+			org_table a
+		LEFT JOIN resource_table b ON a.uid = b.org_id
+		LEFT JOIN sub_resource_table c ON b.uid = c.parent_id
+		LEFT JOIN newest_storage_stat_table d ON c.uid = d.ref_resource
+		LEFT JOIN account_table f ON c.account_id = f.uid
+		WHERE
+			c.account_id != ''
+		AND b.uid = #{uid}
+		AND f.`name`!='' 
+		<if test="type==0" >  
+		ORDER BY num_mb DESC 
+		</if>
+		<if test="type==1" >  
+		ORDER BY num_files DESC
+		</if>
+		LIMIT 0 ,10
+	</select>
+	<select id="getPieInfo" resultType="map">
+		SELECT
+			m.params,
+			ROUND(((n.num_mb)/1024),2)num_mb
+		FROM
+			resource_table m
+		LEFT JOIN (
+			SELECT
+				parent_id,
+				SUM(num_mb) num_mb
+			FROM
+				sub_resource_table a
+			LEFT JOIN newest_storage_stat_table b ON a.uid = b.ref_resource
+			GROUP BY
+				parent_id
+		) n ON m.uid = n.parent_id
+		WHERE
+			m.uid = #{uid}
+			
+		
+	</select>
+	<select id="myjoinOrgInfo" resultType="map">
+		<!-- SELECT 
+			c.`name`,
+			a.params,
+			ROUND(((f.num_mb)/1024),2)num_mb,
+			d.`name` username,
+			d.email,
+		    b.account_id,
+			DATE_FORMAT(g.dt_start, '%Y-%m-%d')dt_start,
+			DATE_FORMAT(g.dt_expired, '%Y-%m-%d')dt_expired
+			FROM sub_resource_table a
+			LEFT JOIN org_account_table b
+			ON a.account_id=b.account_id
+			LEFT JOIN org_table c
+			ON b.org_id=c.uid
+			LEFT JOIN account_table d
+			ON a.account_id=d.uid
+			LEFT JOIN newest_storage_stat_table f
+			ON a.uid=f.ref_resource
+			LEFT JOIN resource_table g
+			ON a.parent_id=g.uid
+		WHERE d.email=#{uid}
+		AND b.admin_type=1 -->
+		
+		SELECT
+			c.`name`,
+			d.`name` username,
+			d.email,
+			b.account_id,
+			DATE_FORMAT(g.dt_start, '%Y-%m-%d') dt_start,
+			DATE_FORMAT(g.dt_expired, '%Y-%m-%d') dt_expired
+		FROM
+			org_account_table b
+		LEFT JOIN org_table c ON b.org_id = c.uid
+		LEFT JOIN account_table d ON b.account_id = d.uid
+		LEFT JOIN resource_table g ON b.org_id = g.org_id
+		LEFT JOIN resource_pool_table h ON g.pool_id=h.uid
+		WHERE
+			d.email = #{uid}
+		AND b.admin_type = 1
+		AND h.category=1
+	</select>
+	<!--增长量柱形图  -->
+	<select id="getDataAddInfo" resultType="map">
+		SELECT
+			a.uid,
+			a.`name`,
+			f.`name` username,
+			d.addnumber,
+			b.params,
+			a.comments,
+			b.uid reduid,
+			c.uid reduids,
+			c.account_id,
+			c.params accquater
+		FROM
+			org_table a
+		LEFT JOIN resource_table b ON a.uid = b.org_id
+		LEFT JOIN sub_resource_table c ON b.uid = c.parent_id
+		LEFT JOIN (
+			SELECT
+				(
+					ROUND((((MAX(num_mb) - MIN(num_mb)))/1024),2)
+				) addnumber,
+				ref_resource
+			FROM
+				storage_stat_table
+			WHERE
+				dt BETWEEN date_sub(now(), INTERVAL 6 MONTH)
+			AND now()
+			GROUP BY
+				ref_resource
+		) d ON c.uid = d.ref_resource
+		LEFT JOIN account_table f ON c.account_id = f.uid
+		WHERE
+			c.account_id != ''
+		AND b.uid = #{uid}
+		AND f.`name`!=''
+        ORDER BY d.addnumber DESC
+		LIMIT 0 ,10
+	</select>
+	<!--查询某一组织下的全部账号  -->
+	<select id="showOrgAccountList" resultType="map">
+		<!-- SELECT * FROM
+			(SELECT  
+		      (@i:=@i+1) as rn,
+					a.uid,
+					b.`name`,
+					b.dep_org,
+					b.email,
+					a.params,
+					a.account_id,
+					a.parent_id
+				FROM
+					sub_resource_table a
+				LEFT JOIN account_table b ON a.account_id = b.uid
+				LEFT JOIN (select @i := 0) as i ON 1=1
+		
+				WHERE
+					a.parent_id = #{reduid}
+				<if test="uid != null and uid !=''" >  
+			        and  a.uid = #{uid}  
+			   </if>
+			   <if test="searchKey != null and searchKey != ''">
+					AND( b.`name` LIKE '%${searchKey}%'
+						OR b.dep_org LIKE '%${searchKey}%'
+						OR a.account_id LIKE '%${searchKey}%'
+						OR b.email LIKE '%${searchKey}%'
+					)
+				</if>
+			)m	 -->
+			SELECT
+				*
+			FROM
+				(
+					SELECT
+						(@i :=@i + 1) AS rn,
+						a.uid,
+						b.`name`,
+						b.dep_org,
+						b.email,
+						a.account_id
+					FROM
+						org_account_table a
+					LEFT JOIN account_table b ON a.account_id = b.uid
+					LEFT JOIN (SELECT @i := 0) AS i ON 1 = 1
+					WHERE
+						a.org_id = #{reduid}
+						<if test="uid != null and uid !=''" >  
+					        and  a.uid = #{uid}  
+					   </if>
+					   <if test="searchKey != null and searchKey != ''">
+							AND( b.`name` LIKE '%${searchKey}%'
+								OR b.dep_org LIKE '%${searchKey}%'
+								OR a.account_id LIKE '%${searchKey}%'
+								OR b.email LIKE '%${searchKey}%'
+							)
+						</if>
+				) m
+			<if test="start != null and start != ''">
+				where m.rn between ${start} and ${end}
+			</if>
+	</select>
+	<delete id="delUserRes">
+		DELETE  FROM sub_resource_table WHERE uid=#{uid}
+	</delete>
+	<delete id="delAccount">
+		DELETE  FROM org_account_table WHERE account_id=#{account_id}
+	</delete>
+	<delete id="delUser">
+		DELETE  FROM account_table WHERE uid=#{account_id}
+	</delete>
+	<update id="updataAccountInfo">
+	     update account_table set `name`=#{account_names} ,dep_org=#{dep_orgs},email=#{emails} where uid=#{account_ids}
+	</update>
+	<!--组织管理员查询全部信息  -->
+	<select id="showAdminAllInfo" resultType="map">
+		SELECT
+			a.`name` orgName,
+			b.`name` adminName,
+			c.params,
+			DATE_FORMAT(c.dt_start, '%Y-%m-%d') dt_start,
+			DATE_FORMAT(c.dt_expired, '%Y-%m-%d') dt_expired,
+			CASE
+		WHEN c.valid = 'Y' THEN
+			'通过'
+		WHEN c.valid = 'N' THEN
+			'未通过'
+		ELSE
+			'待审核'
+		END valid,
+		c.uid,
+		a.uid orgId
+		FROM
+			org_table a
+		LEFT JOIN account_table b ON a.admin = b.uid
+		LEFT JOIN resource_table c ON a.uid = c.org_id
+		LEFT JOIN resource_pool_table d ON c.pool_id=d.uid
+		where (ISNULL(c.params) OR d.category=1)
+		<if test="orgName != null and orgName !=''" >  
+	        and  a.`name` like CONCAT('%',#{orgName},'%') 
+	    </if> 
+	    <if test="adminName != null and adminName !=''" >  
+	        and  b.`name` like CONCAT('%',#{adminName},'%')  
+	    </if> 
+	</select>
+	<!--查询用户角色信息  -->
+	<select id="selectRoleInfo" resultType="map">
+		SELECT
+			a.account_id,
+			a.role
+		FROM
+			user_role_table a
+		WHERE
+			a.account_id =#{umtId}
+	</select>
+	<!--申请资源时插入一条订单消息  -->
+	<insert id="addMessage" useGeneratedKeys="true">
+		insert into 
+		message_table(receiver,dt_created,message,ref_resource,identify,message_identify) 
+		values 
+		(#{applyId},now(),#{message},#{order_id},'0','1')
+	</insert>
+	<!--查询系统通知  -->
+	<select id="showMessageInfo" resultType="map">
+		SELECT
+			a.uid,
+			a.receiver,
+			DATE_FORMAT(a.dt_created, '%Y-%m-%d') dt_created,
+			a.message,
+			a.ref_resource,
+			a.identify,
+			a.message_identify
+		FROM
+			message_table a
+		LEFT JOIN resource_table b ON a.ref_resource = b.order_id
+		LEFT JOIN resource_pool_table c ON b.pool_id = c.uid
+		where message_identify='1'
+		<if test="umtId != null and umtId !=''" >  
+	        AND  a.receiver = #{umtId}
+	    </if> 
+	    AND c.category = 1
+	    ORDER BY identify ASC,dt_created DESC
+	</select>
+	<select id="showDataItem" resultType="map">
+		SELECT
+			a.uid,
+			a.parent_id,
+			a.account_id,
+			a.params,
+			a.valid
+		FROM
+			sub_resource_table a
+	</select>
+	 <insert id="insertstorage" useGeneratedKeys="true" parameterType="java.util.Map">
+		
+		insert into resource_table(dt,num_mb,num_files,ref_resource) values (#{dt},#{usedMb},#{usedInodes},#{uid})
+	</insert>
+	<select id="selectNumberAllInfo" resultType="map">
+		SELECT
+			ROUND(
+				(SUM(num_mb) / 1024 / 1024),
+				2
+			) num_mb
+		FROM
+			newest_storage_stat_table
+	</select>
+	 <insert id="addAppMessage" useGeneratedKeys="true" >
+		insert into 
+		message_table(receiver,dt_created,message,ref_resource,identify,message_identify) 
+		values 
+		(#{umtId},now(),#{messages},#{order_id},'0','1')
+	</insert>
+	<!--删除无用的课题组信息  -->
+	<delete id="delOrgInfoNouse">
+		DELETE  FROM org_table WHERE uid=#{orgId}
+	</delete>
+	<!-- 获取单个账号资源使用情况饼图信息 -->
+	<select id="getAccountPieInfo" resultType="map">
+		SELECT
+			a.params,
+			a.account_id,
+			ROUND(((b.num_mb) / 1024), 2) num_mb
+		FROM
+			sub_resource_table a
+		LEFT JOIN newest_storage_stat_table b ON a.uid = b.ref_resource
+		WHERE
+			account_id = #{account_id}
+	</select>
+	<!-- 获取单个账号近90天资源使用情况 -->
+	<select id="getUsedTrend" resultType="map">
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					a.params,
+					a.account_id,
+					b.num_mb,
+					b.num_files,
+					b.dt
+				FROM
+					sub_resource_table a
+				LEFT JOIN (
+					SELECT
+						p.ref_resource,
+						DATE_FORMAT(p.dt, '%Y-%m-%d') dt,
+						num_files,
+						ROUND(((num_mb) / 1024), 2) num_mb
+					FROM
+						(
+							SELECT
+								ref_resource,
+								MAX(dt) dt
+							FROM
+								storage_stat_table
+							WHERE
+								TO_DAYS(dt) % 6 = TO_DAYS(now()) % 6
+							GROUP BY
+								ref_resource,
+								DATE_FORMAT(dt, '%Y-%m-%d')
+						) p
+					LEFT JOIN storage_stat_table q ON p.dt = q.dt
+				) b ON a.uid = b.ref_resource
+				WHERE
+					account_id = #{account_id}
+				ORDER BY
+					dt DESC
+				LIMIT 0,
+				11
+			) m
+		ORDER BY
+			m.dt ASC
+	</select>
+	<!-- 获取总管理员的id -->
+	<select id="showShenpiId" resultType="map">
+		SELECT
+			a.account_id,
+			b.email
+		FROM
+			user_role_table a
+		LEFT JOIN account_table b ON a.account_id = b.uid
+		WHERE
+			role = '0'
+	</select>
+	<!-- 验证账号信息是否重复 -->
+	<select id="ExiteAccountInfo" resultType="map">
+		SELECT
+			*
+		FROM
+			org_account_table
+		WHERE
+			account_id = #{account_id}
+	</select>
+	<select id="showTechnologyInfo" resultType="map">
+		SELECT
+			SUM(a.usage_gb)storage_used,
+			SUM(a.num_files) files,
+			SUM(num_users)num_users
+		FROM
+			(
+				SELECT
+					c.parent_id AS resource_id,
+					ROUND((sum(d.num_mb)) / 1024, 2) AS usage_gb,
+					(sum(d.num_files)) num_files,
+					count(*) AS num_users
+				FROM
+					sub_resource_table c
+				LEFT JOIN newest_storage_stat_table d ON c.uid = d.ref_resource
+				GROUP BY
+					c.parent_id
+			) a,
+			resource_table e,
+			org_table f
+		WHERE
+			a.resource_id = e.uid
+		AND e.org_id = f.uid
+		AND e.valid = 'Y'
+		<if test="umtId != null and umtId !=''" >  
+			AND	f.admin  = #{umtId}  
+		</if>
+	</select>
+	<select id="showMyTecJoinInfo" resultType="map">
+		SELECT
+			SUM(a.params) storage_total,
+			SUM(
+				ROUND(((f.num_mb) / 1024), 2)
+			) storage_used,
+			SUM(f.num_files) files,
+			ROUND(
+				(
+					SUM(
+						ROUND(((f.num_mb) / 1024), 2)
+					) / SUM(a.params)
+				) * 100,
+				2
+			) storage_util
+		FROM
+			sub_resource_table a
+		LEFT JOIN org_account_table b ON a.account_id = b.account_id
+		LEFT JOIN org_table c ON b.org_id = c.uid
+		LEFT JOIN account_table d ON a.account_id = d.uid
+		LEFT JOIN newest_storage_stat_table f ON a.uid = f.ref_resource
+		WHERE
+			d.email = #{email}
+	</select>
+	<!--通知详情  -->
+	<select id="showMessageInfoDetail" resultType="map">
+		SELECT
+			DATE_FORMAT(a.dt_created, '%Y-%m-%d') dt_created,
+			a.message,
+			a.identify,
+			a.message_identify,
+			b.`name`,
+			b.dep_org,
+			a.uid,
+			b.email,
+			c.params,
+			DATE_FORMAT(c.dt_start, '%Y-%m-%d') dt_start,
+			DATE_FORMAT(c.dt_expired, '%Y-%m-%d') dt_expired,
+			d.`name` orgName,
+			c.comments,
+			e.comments shenpicomments
+		FROM
+			message_table a
+		LEFT JOIN resource_table c ON a.ref_resource = c.order_id
+		LEFT JOIN org_table d ON c.org_id = d.uid
+		LEFT JOIN account_table b ON b.uid = d.admin
+		LEFT JOIN order_table e ON a.ref_resource=e.id
+		WHERE
+			a.uid = #{uid}
+	</select>
+	<!--订单详情  -->
+	<select id="checkInfoDetail" resultType="map">
+		SELECT
+			a.id,
+			b.params,
+			DATE_FORMAT(b.dt_start, '%Y-%m-%d') dt_start,
+			DATE_FORMAT(b.dt_expired, '%Y-%m-%d') dt_expired,
+			c.`name` orgName,
+			DATE_FORMAT(a.dt_created, '%Y-%m-%d') dt_created,
+			a.comments,
+			CASE
+		WHEN b.valid = 'Y' THEN
+			'通过'
+		WHEN b.valid = 'N' THEN
+			'未通过'
+		ELSE
+			'待审核'
+		END valid,
+		 b.org_id,
+		 d.`name`,
+		 d.uid applyId,
+		 d.email,
+ 		 f.`name` resName,
+ 		 b.comments apply_reason,
+		 c.contact_person,
+		 c.contact_phone,
+		 d.email,
+		b.uid resId
+		FROM
+			order_table a
+		LEFT JOIN resource_table b ON a.id = b.order_id
+		LEFT JOIN org_table c ON b.org_id = c.uid
+		LEFT JOIN account_table d ON c.admin = d.uid
+		LEFT JOIN resource_pool_table f ON b.pool_id = f.uid
+		WHERE f.category=1
+		<if test="uid != null and uid !=''" >  
+			AND	a.id = #{uid} 
+		</if>
+	</select>
+	<!--修改通知标识，查询是否读过   -->
+	<update id="updateMessageIdentify">
+	     update message_table set identify='1' where uid=#{uid}
+	</update>
+	<select id="showParamAllInfo" resultType="map">
+		SELECT
+			e.params
+		FROM
+			resource_table e,
+			org_table f
+		WHERE
+			e.org_id = f.uid
+		AND e.valid = 'Y'
+		<if test="umtId != null and umtId !=''" >  
+			AND	f.admin  = #{umtId}  
+		</if>
+	</select>
+	<!--系统通知相关信息  -->
+	<select id="showXiTongMessageInfo" resultType="map">
+		SELECT
+			a.uid,
+			a.receiver,
+			DATE_FORMAT(a.dt_created, '%Y-%m-%d') dt_created,
+			a.message,
+			a.ref_resource,
+			a.identify,
+			a.message_identify
+		FROM
+			message_table a
+		WHERE message_identify='0'
+		<if test="uid != null and uid !=''" >  
+			AND	a.uid  = #{uid}  
+		</if>
+	</select>
+	<!--发布系统通知  -->
+	 <insert id="addSystemMessage" useGeneratedKeys="true" >
+		insert into 
+		message_table(receiver,dt_created,message,identify,message_identify) 
+		values 
+		(#{umtId},now(),#{message},'0','0')
+	</insert>
+	<delete id="delUserPerRes">
+		DELETE  FROM storage_stat_table WHERE ref_resource=#{uid}
+	</delete>
+	<select id="getOrgName" resultType="String">
+		SELECT
+			a.name
+		FROM
+			org_table a
+		WHERE a.uid  = #{orgId}  
+	</select>
+	<select id="adminUserInfo" resultType="map">
+		SELECT
+			a.org_id,
+			a.account_id,
+			a.uid,
+			a.admin_type,
+            b.`name`,
+			a.psd
+		FROM
+			org_account_table a
+			LEFT JOIN org_table b
+			ON a.org_id=b.uid
+		WHERE
+			a.admin_type = 0
+		AND a.org_id = #{orgId} 
+	</select>
+	<!--修改用户登录密码  -->
+	<update id="updataYunPsd">
+	     update org_account_table set psd=#{newPsd} where account_id=#{new_account_name}
+	</update>
+	<!--查询课题组名字是否重复  -->
+	<select id="exitOrgInfo" resultType="map">
+		SELECT
+			name
+		FROM
+			org_table
+		WHERE
+			name = #{orgName} 
+	</select>
+	<!-- 查询所有创建云主机的用户信息 -->
+	<select id="showUserInfo" resultType="map">
+		SELECT
+			a.uid,
+			a.account_id,
+			a.parent_id,
+			a.vm_id
+		FROM
+			sub_resource_table a
+		LEFT JOIN resource_table b ON a.parent_id = b.uid
+		WHERE
+			b.pool_id = 3 
+	</select>
+	<!-- 查询已经分配 -->
+	<select id="getIpInfo" resultType="string">
+		SELECT
+			MAX(ip) ip
+		FROM
+			ip_cidr
+		WHERE
+			ip NOT IN (
+				"192.168.101",
+				"192.168.231",
+				"192.168.230",
+				"192.168.211",
+				"192.168.114",
+				"192.168.100"
+			)
+	</select>
+	<!--插入新的一条ip记录  -->
+	 <insert id="insertIpInfo" useGeneratedKeys="true" >
+		insert into 
+		ip_cidr(ip) 
+		values 
+		(#{ipNewReturn})
+	</insert>
+	<!-- 查询课题组是否申请过资源 -->
+	<select id="getIsResource" resultType="map">
+		SELECT
+			uid,
+			org_id
+		FROM
+			resource_table
+		WHERE
+			resource_table.pool_id = 3
+		AND org_id =#{orgIds}
+			
+	</select>
+	<!-- 查询课题组是否申请过资源 -->
+	<select id="passwordInfo" resultType="string">
+		SELECT
+			psd
+		FROM
+			org_account_table
+		WHERE
+			account_id =#{account_id}
+	</select>
+	<!-- 查询所有创建云主机的账号信息 -->
+	<select id="userAccountInfo" resultType="map">
+		SELECT
+			a.org_id,
+			a.account_id,
+			b.uid,
+			a.psd,
+			d.`name`
+		FROM
+			org_account_table a
+		LEFT JOIN resource_table b ON a.org_id = b.org_id
+		LEFT JOIN resource_pool_table c ON b.pool_id = c.uid
+		LEFT JOIN org_table d ON a.org_id = d.uid
+		LEFT JOIN org_account_table f ON a.org_id = f.org_id
+		WHERE
+			c.category = 1
+		AND b.valid IS NOT NULL
+	</select>
+	<!--插入子资源云主机数据  -->
+	 <insert id="insertSubresouce" useGeneratedKeys="true" >
+		insert into 
+		sub_resource_table(parent_id,account_id,params,valid,vm_id) 
+		values 
+		(#{uid},#{account_id},#{paramyun},'Y',#{id})
+	</insert>
+	<!--插入子资源云主机实时监控数据  -->
+	 <insert id="insertVmsouce" useGeneratedKeys="true" >
+		insert into 
+		vm_stat_table(ref_resource,dt,cpu_percent,memory_mb,disk_write,disk_read,incoming,outgoing) 
+		values 
+		(#{uid},now(),#{counterVolume},#{usagelv},#{writeCounterVolume},#{readCounterVolume},#{incomingCounterVolume},#{outgoingCounterVolume})
+	</insert>
+	<!-- 查询虚拟机是否已经存在 -->
+	<select id="userVmIdInfo" resultType="map">
+		SELECT
+			*
+		FROM
+			sub_resource_table a
+		WHERE
+			a.vm_id = #{id}
+	</select>
+</mapper>
+
+

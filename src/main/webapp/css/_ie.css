@@ -1,0 +1,4 @@
+#createLinkModal .input_container input,#editLinkModal .input_container input{
+	width:354px;
+	padding:0 0 0 10px;
+}

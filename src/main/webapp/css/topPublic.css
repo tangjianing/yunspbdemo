@@ -1,0 +1,32 @@
+/**
+ * 公共top样式
+ * 
+ * @author SYX
+ * 
+ */
+
+div#top {
+	/*background: rgba(255,255,255,0.5);*/
+	padding-left: 5%;
+}
+
+div#top>div.col-xs-8.col-sm-8.col-md-8.col-lg-8 {
+	padding-right: 5%;
+	font-size: 18px;
+	color: #FFF;
+	text-align: right;
+	line-height: 50px;
+}
+
+div#top>div.col-xs-8.col-sm-8.col-md-8.col-lg-8>a {
+	color: #FFF;
+	text-decoration: none;
+}
+
+div#top>div.col-xs-8.col-sm-8.col-md-8.col-lg-8>span:nth-child(2) {
+	color: #72797b;
+}
+
+div#top>div.col-xs-8.col-sm-8.col-md-8.col-lg-8>a:hover {
+	font-size: 19px;
+}

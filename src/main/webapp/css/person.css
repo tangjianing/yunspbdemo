@@ -1,0 +1,729 @@
+#content-container{
+    width:1340px;
+    margin:0 auto;
+    overflow: hidden;
+    clear: both;
+    position:relative;
+}
+
+.content-group{
+    padding:50px;
+    background:#fff;
+    overflow:hidden;
+}
+
+.content-list{
+    background:url("../images/cutiao.png") no-repeat ;
+    margin-bottom: 20px;
+    padding-top: 6px;
+    clear:both;
+}
+/* 标题 */
+.title{
+    font-size: 18px;
+    line-height: 46px;
+    padding-left: 60px;
+    background-position:20px center ;
+    background-repeat: no-repeat;
+    margin-bottom: 16px;
+    border: 0;
+    box-shadow: none;
+    overflow:hidden;
+}
+.collapse_btn{
+    float: right;
+    background-image: url("../images/zhedie.png");
+    background-repeat: no-repeat;
+    background-position: left center;
+    color: #666;
+    border-radius: 0;
+    padding:5px 18px 5px 60px;
+    border: 1px solid #ddd;
+    font-weight: normal;
+    line-height: 24px;
+    margin-top: 10px;
+    margin-right: 15px;
+    font-size:14px;
+    cursor:pointer;
+    letter-spacing:5px;
+    text-decoration:none;
+}
+.collapse_btn:hover{
+	text-decoration:none;
+}
+.collapse_btn:visited{
+	text-decoration:none;
+}
+.content-title-1{
+    background-image:url("../images/geren.png") ;
+}
+
+.content-title-2{
+    background-image:url("../images/wenjian.png");
+}
+
+.content-title-3{
+    background-image:url("../images/daiban.png");
+}
+.content-title-4{
+    background-image:url("../images/changyong.png");
+}
+.content-title-arrow{
+	background-image:url("../images/arrow_right.png");
+	background-position: 30px center;
+	border-bottom:1px solid #eee;
+}
+.content-title-4 .row_count{
+    font-size: 14px;
+}
+.content-list-item{
+    padding:0 36px;
+    clear: both;
+    overflow:hidden;
+}
+#content-list-item-1{
+    padding: 0 90px;
+}
+#content-list-item-1 .border_bg{
+    width:132px;
+    height: 182px;
+    background: url("../images/border-bg.png") no-repeat;
+    position: relative;
+    padding:3px;
+}
+#content-list-item-1 .member_pic{
+    width:126px;
+    height: 176px;
+    position: relative;
+    line-height:170px;
+    display: table-cell;
+ 	vertical-align:middle; 
+}
+#content-list-item-1 .member_pic img{
+    width: 100%;
+    max-height:176px;
+    vertical-align:middle;
+}
+
+#content-list-item-1 .member_pic .change_img{
+    display: none;
+    width: 126px;
+    height:40px;
+    line-height: 40px;
+    background: #000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size:12px;
+}
+#content-list-item-1 .member_pic .change_img a{
+    display: block;
+    color: #fff;
+    text-align: center;
+}
+/* 上传图片Madal */
+#picModal .upload-control{
+    width: 500px;
+    overflow: hidden;
+    margin: 10px auto;
+}
+#picModal .input-text{
+    width: 60%;
+    display: inline-block;
+    height:36px;
+    line-height:36px;
+    margin: 0 10px;
+    padding: 0;
+}
+#picModal .word{
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
+}
+#picModal .upload-rule{
+    clear: both;
+    margin: 10px auto;
+    overflow: hidden;
+    padding-left:40px;
+}
+#picModal .upload-rule h2,#picModal .upload-rule p{
+    font-size: 14px;
+}
+#picModal .upload-rule h2{
+    font-weight: normal;
+    line-height: 18px;
+}
+#picModal #preview_wrapper{
+    clear: both;
+    width: 176px;
+    height:176px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+#preview_fake{ /* 该对象用于在IE下显示预览图片 */
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);
+	width:176px;
+	height:176px;
+}
+#preview_size_fake{ /* 该对象只用来在IE下获得图片的原始尺寸，无其它用途 */
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);	
+	visibility:hidden;
+}
+#preview{ /* 该对象用于在FF下显示预览图片 */
+    width: 176px;
+    height:auto;
+}
+#upload-error{
+	text-align:center;
+	padding:5px 0;
+	color:red;
+}
+/*个人信息表格  */
+#content-list-item-1 table{
+    width: 900px;
+    margin: 0;
+}
+#content-list-item-1 table tr td{
+	border: 1px solid #ddd;
+    vertical-align: middle;
+    padding: 0 0 0 8px;
+    line-height:35px;
+    font-size:14px;
+}
+#content-list-item-1 .style_setting .radio_group{
+	margin-top:5px;
+}
+.style_setting .radio_group .radio_wraper .radioClass{
+	margin-left:7px;
+}
+#content-list-item-1 table tr td.style_setting .style_name{
+	line-height:20px;
+	
+}
+#personalSetModal table tr td{
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    padding: 9px;
+}
+
+#personalSetModal table tr td.edit_td,#personalSetModal .table tr td.style_setting{
+    padding: 1px 9px;
+}
+#content-list-item-1 table tr td:hover{
+    background: #eee;
+}
+#content-list-item-1 table tr td.edit_td:hover{
+	 background: #fff;
+}
+
+/* 文件快捷键设置 */
+.btn_container{
+    float:left;
+    overflow:hidden;
+    margin-left:20px;
+    position:relative;
+}
+.btn_container.noMargin{
+	margin-left:0;
+}
+.edit-btn{
+	height:36px;
+    display: inline-block;
+    background:#fafafa url("../images/bianji.png") no-repeat left center;
+    color: #666;
+    border-radius: 0;
+    font-weight: normal; 
+    float:left;
+    cursor:pointer;
+}
+.edit_td .edit-btn{
+	margin-left:0;
+}
+.create-btn{
+    background:#fafafa url("../images/xinjian.png") no-repeat left center;
+    height:36px;
+    display: inline-block;
+    color: #666;
+    border-radius: 0;
+    font-weight: normal;
+    float:left;
+    cursor:pointer;
+}
+.delete-btn{
+	height:36px;
+    display: inline-block;
+    color: #666;
+    border-radius: 0;
+    font-weight: normal;
+    float:left;
+    background:#fafafa url("../images/shanchu.png") no-repeat left center;
+    cursor:pointer;
+}
+.edit-btn span,.create-btn span,.delete-btn span {
+	display: inline-block;
+    height:34px;
+    line-height: 34px;
+    padding: 0 10px 0 45px;
+    border: 1px solid #eee;
+}
+.content-header{
+    overflow: hidden;
+    margin: 10px 0;
+}
+.checkbox_group input[type=checkbox]{
+    margin-left: 2px;
+}
+.content-header .caption{
+    height:36px;
+    line-height: 36px;
+    font-size: 14px;
+    float: left;
+}
+.content-header .checkbox_group{
+	height:22px;
+	float:left;
+	padding:7px 0;
+	margin-left:20px;
+}
+.edit_footer{
+    text-align: center;
+    margin-top: 10px;
+    clear:both;
+    background:#fff;
+}
+.edit_footer input{
+    height:34px;
+    line-height:34px;
+    padding:0 25px;
+    border: none;
+    border-radius: 0;
+    text-shadow:none;
+    background: #cccfd6;
+}
+.edit_footer input.save{
+    background: #0787d0;
+    color: #fff;
+}
+/* 待办信息设置 */
+/* 表格 */
+.remind_table tr td{
+    border:1px solid #eee;
+    vertical-align: middle;
+    text-align: center;
+}
+#content-list-item-3 .radio_group input.radioClass{
+	margin-left:2px;
+}
+
+/*常用链接  */
+.link_group{
+	width:1168px;
+	margin-top:15px;
+}
+.link_header{
+	background:#eee;
+	overflow:hidden;
+}
+.link_header, .link_list{
+	width:1168px;
+	overflow:hidden
+}
+.link_list {
+	clear:both;
+	margin-top:20px;
+}
+.link_list li{
+	overflow:hidden;
+}
+.link_group .select_wrapper{
+	width: 100px;
+    padding:8px 0;
+    text-align:center;
+}
+.link_group .link_name{
+	width: 200px;
+    padding:8px 0;
+    text-align:center;
+}
+.link_group .link_address{
+    width: 868px;
+    padding:8px 0;
+    overflow:hidden;
+    text-align:center;
+}
+.link_group .link_list .link_address{
+	    text-align:left;
+}
+.link_group .link_list .link_name{
+	    text-align:left;
+}
+
+
+
+
+
+
+
+
+
+
+/* 常用意见 */
+.opinion_tab{
+	overflow:hidden;
+}
+#content,.tab-content,.opinion_tab{
+	clear:both;
+}
+.opinion_tab .navbar{
+	overflow:hidden;
+}
+.opinion_tab .navbar .nav li{
+    border-right:3px solid #e1e4e9;
+    background: #f3f3f3;
+}
+.opinion_tab .navbar .nav li.noBorder{
+	border:0;
+}
+.opinion_tab .navbar .nav li.active{
+    background:#fff url("../images/tab-border2.png") no-repeat top;
+}
+.opinion_tab .navbar .nav li a{
+    font-weight: 600;
+    display: block;
+    padding:8px 56px;
+    font-size: 14px;
+}
+.opinion_tab .navbar .nav li a:hover{
+    text-decoration: none;
+}
+.opinion_tab .navbar .nav li.active a{
+    color:#2699d9;
+    padding:8px 30px 8px 64px;
+    background: url("../images/icon-arrow-right.png") no-repeat 45px center;
+}
+.opinion_tab .tab-content{
+	padding:30px 50px 0 50px;
+	background:#fff;
+}
+
+
+
+.opinion_tab  .opinion_header{
+	padding:5px 0;
+	overflow:hidden;
+	background:#eee;
+	text-align:center;
+	margin-top:20px;
+}
+
+.opinion_tab  .opinion_header  .select_all .checkbox_wraper{
+	margin-right:10px;
+}
+
+#apply_opinion_container,#personal_opinion_container{
+	min-height:150px;
+	position:relative;
+}
+#shortcutKey_checked_container,#shortcutKey_all_container,#notDo_checked_container,#notDo_all_container,#personalOpinion_tree_container{
+	position:relative;
+	clear:both;
+}
+.opinion_tab .apply_opinion_content ,.opinion_tab .personal_opinion_content {
+	margin-top:15px;
+}
+.opinion_tab .apply_opinion_content li,.opinion_tab .personal_opinion_content li{
+	overflow:hidden;
+	clear:both;
+	text-align:center;
+	padding:5px 0;
+}
+.opinion_tab  .opinion_header  .select_all{
+	width:10%;
+}
+.opinion_tab  .opinion_header  .opinion_content{
+	width:90%;
+}
+.opinion_tab  .opinion_header .file_type{
+	width:60%;
+}
+.opinion_tab  .opinion_header .opinion_words{
+	width:30%;
+}
+.opinion_tab   .checkbox_group{
+	margin:0;
+}
+#apply_opinion_container .checkbox_group .checkbox_wraper,#personal_opinion_container .checkbox_group .checkbox_wraper{
+	float:none;
+}
+.file_type_content,.opinion_words_content {
+	min-height:30px;
+}
+
+
+
+
+/*  新建通用意见Modal*/
+
+#createApplyOpinionModal,#editApplyOpinionModal{
+	width:440px;
+	margin-left:-220px;
+}
+#createApplyOpinionModal .input_container,#editApplyOpinionModal .input_container{
+	padding:0 12px;
+}
+#createApplyOpinionModal .input_container textarea,#editApplyOpinionModal .input_container textarea{
+	width:100%;
+	height:100px;
+	border:0;
+	border-radius:0;
+	box-shadow:none;
+	background:#eee;
+	font-family:"microsoft yahei";
+}
+
+
+/*新建个性化意见  */
+#edit-area  .enter_area{
+	height:120px;
+	overflow:hidden;
+	border:1px solid #eee;
+}
+#edit-area   .enter_rule{
+	width:30%;
+	height:80px;
+	text-align:center;
+	padding-top:40px;
+	background:#f1f2f6;
+}
+#edit-area   .enter_rule p.explain{
+	font-size:12px;
+}
+#edit-area   .textarea-container{
+	width:70%;
+	height:120px;
+}
+#edit-area  .textarea-container textarea{
+	width:100%;
+	height:100%;
+	border:0;
+	outline:0;
+	margin:0;
+	padding:0;
+	box-shadow:none;
+	background:#fafafa;
+}
+.remind_table .radioClass{
+	margin-left:7px;
+}
+
+
+
+/*提示框  */
+#confirmModal{
+	width:326px;
+	margin-left:-163px;
+}
+#information{
+	font-size:16px;
+	text-align:center;
+}
+#confirmModal .modal-footer{
+	text-align:center;
+}
+
+/*个人设置Modal  */
+#personalSetModal {
+	width:800px;
+	margin-left:-400px;
+}
+#personalSetModal table tr td.select_td{
+	padding:3px 9px;
+	width:200px;
+}
+#personalSetModal table tr td select.telephonenumber_select{
+	border:0;
+	margin:0;
+	padding:0 0 0 4px;
+	border-radius:0;
+	wwidth:120px;
+}
+
+#personalSetModal form input{
+	margin-bottom:0;
+    padding: 2px 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+#personalSetModal form .modal-footer input{
+	height:34px;
+    line-height:34px;
+    padding:0 25px;
+    border: none;
+    border-radius: 0;
+    text-shadow:none;
+    background: #cccfd6;
+}
+#personalSetModal form .modal-footer input.save{
+	    background: #0787d0;
+	    color:#fff;
+}
+#personalSetModal form input[readonly]{
+    background: #fff;
+}
+#personalSetModal .modal-footer{
+	overflow:hidden;
+}
+#personalSetModal .modal-footer{
+	text-align:center;
+}
+#createLinkModal,#editLinkModal{
+	width:400px;
+	margin-left:-200px;
+}
+#createLinkModal .input_container input,#editLinkModal .input_container input{
+	width:364px;
+	padding:0 0 0 10px;
+	height:30px;
+	line-height:30px;
+	margin:5px 0;
+	border:1px solid #999;
+	box-shadow:none;
+}
+
+.close_cur{
+	display:block;
+	width:102px;
+	height:34px;
+	line-height:34px;
+	padding:0;
+	background:#0787d0;
+	color:#fff;
+	text-align:center;
+	position:absolute;
+	right:66px;
+	top:20px;
+	border:none;
+	outline:none;
+	margin:0;
+}
+.close_cur:hover{
+	color:#fff;
+	text-decoration:none;
+}
+
+
+
+
+
+/* 错误 */
+ul#personalSetError{
+	width:600px;
+	height:auto;
+	margin:0 auto;
+	overflow:hidden;
+	clear:both;
+}
+ul#personalSetError li{
+	float:left;
+	width:180px;
+	margin:0 10px;
+	color:red;
+}
+ul#createLinkError,ul#editLinkError{
+	overflow:hidden;
+	width:300px;
+	margin:0 auto;
+}
+ul#createLinkError li,ul#editLinkError li{
+	width:150px;
+	float:left;
+	text-align:left;
+	color:red;
+}
+
+#edit_shortcutKey_error,.personal_create_error,.edit_notDoAll_error{
+	text-align:center;
+	color:red;
+}
+
+#createApplyOpinionModal .applyOpinionError,#editApplyOpinionModal .editapplyOpinionError{
+	font-size:14px;
+	line-height:14px;
+	color:red;
+	text-indent:60px;
+	padding:5px 0;
+}
+
+
+/*遮罩  */
+.a_shade{
+	display:none;
+	width:85px;
+	height:36px;
+	position:absolute;
+	left:0;
+	top:0;
+	opacity:0.2;
+	filter:alpha(opacity=20);
+	background:#000;
+}
+.floatEditBtn{
+	width:1340px;
+	height:50px;
+	position:fixed;
+	left:50%;
+	margin-left:-670px;
+	top:0;
+	background:#fff;
+	border:1px solid #eee;
+}
+.floatEditBtn .edit_footer{
+	text-align:left;
+	padding-left:50px;
+}
+/*底部*/
+#footer{
+	margin-top:16px;
+    height:90px;
+    padding-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    background: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

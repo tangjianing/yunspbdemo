@@ -1,0 +1,312 @@
+body,div,p,ul,li,ol,a,span,h1,h2,h3,h4,h5,h6,form,input,table,thead,tbody,tr,th,td{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: "microsoft yahei","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+}
+li{
+    list-style: none;
+}
+input{
+    font-family: "microsoft yahei","Helvetica Neue",Helvetica,Arial,sans-serif;
+    outline: none;
+}
+a {
+    font-family: "microsoft yahei","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #000;
+    text-decoration: none;
+    outline: none;
+    border:none;
+    cursor:pointer;
+}
+h1,h2,h3,h4,h5,h6{
+    font-family:"microsoft yahei","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+a img{
+    width:100%;
+    height:auto;
+    border:0;
+}
+.figure{
+    overflow: hidden;
+}
+.figure .caption{
+    padding-left:16px;
+}
+.width100{
+	width:100px;
+}
+.width240{
+	width:240px;
+}
+.width10_{
+	width:10%;
+}
+.width60_{
+	width:60%;
+}
+.width30_{
+	width:30%;
+}
+.width90_{
+	width:90%;
+}
+.box_hide{
+    display: none;
+}
+.bgf1f2f6{
+	background:#f1f2f6;
+}
+.bgfafafa{
+	background:#fafafa;
+}
+.table tr td{
+	font-size:14px;
+}
+.a-file {
+    position: relative;
+    display: inline-block;
+    background: #0787d0;
+    width:104px;
+    height:38px;
+    line-height: 38px;
+    margin-left:10px;
+}
+.a-file span{
+	display: inline-block;
+    background: #0787d0;
+    width:104px;
+    height:38px;
+    line-height: 38px;
+    text-align:  center;
+    overflow: hidden;
+    color: #fff;
+    text-decoration: none;
+    text-indent: 0;
+    font-size: 16px;
+}
+.a-file:hover{
+    color: #fff;
+}
+.a-file input {
+    position: absolute;
+    font-size: 30px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+ 	filter:alpha(opacity=0); 
+}
+.modal-header{
+    background: url("../images/caitiao.png") repeat-x left bottom;
+}
+.modal-header .close{
+	background:#fff;
+}
+.modal-footer{
+	background:#fff;
+}
+.modal-footer input
+{
+    height:34px;
+    line-height:34px;
+    border: none;
+    border-radius: 0;
+    background: #cccfd6;
+    font-size: 14px;
+    margin:0 10px;
+    outline:none;
+    padding:0 25px;
+}
+
+.modal-footer input.save{
+    background: #0787d0;
+    color: #fff;
+}
+.select_all span{
+    vertical-align:top;
+    display:inline-block;
+}
+.checkbox_group {
+    display: inline-block;
+    overflow:hidden;
+    margin-right:5px;
+}
+.checkbox_group span{
+	display:inline-block;
+	float:left;
+}
+.checkbox_wraper{
+	display:inline-block;
+	margin-right:5px;
+	width: 17px;
+    height: 19px;
+    cursor: pointer;
+    background-image: url("../images/tree.png");
+    background-repeat: no-repeat;
+    background-position:0 2px;
+    
+}
+.checkbox_wraper.on{
+	background-position:-21px 2px;
+}
+.checkbox_wraper input.checkbox_class,.radio_group .radio_wraper .radioClass{
+	margin-top:4px;
+ 	opacity: 0;
+    cursor: pointer;
+    filter: alpha(opacity=0);
+}
+.radio_group{
+    display: inline-block;
+    height: 25px;
+    float: left;
+    cursor: pointer;
+    margin-right: 10px;
+    overflow:hidden;
+}
+.radio_group span{
+	display:inline-block;
+	float:left;
+}
+.radio_group .radio_wraper{
+	display:inline-block;
+	float:left;
+    width:26px;
+	height:24px;
+	background-image: url("../images/fou.png");
+    background-repeat: no-repeat;
+    background-position:5px 2px;
+}
+.radio_wraper.on {
+    background-image: url("../images/shi.png");
+    background-repeat: no-repeat;
+    background-position: 5px 2px;
+}
+
+/*��ҳ��  */
+.page{
+	width:900px;
+	margin:16px auto;
+	overflow:hidden;
+	text-align:center;
+
+}
+.page a{
+	display:inline-block;
+	padding:4px 14px;
+	border:1px solid #eee;
+	margin:0 3px;
+		color:#000;
+	
+}
+.page .jump-ipt{
+	width:40px;
+	height:28px;
+	border:1px solid #eee;
+	padding:0;
+	margin:0 5px;
+	line-height:28px;
+	border-radius:0;
+	text-align:center;
+	
+}
+.page .jump-btn{
+	padding:4px 10px;
+	border-radius:5px;
+}
+.page span.active{
+	background:#0787d0;
+		display:inline-block;
+	padding:4px 14px;
+	border:1px solid #eee;
+		margin:0 3px;
+		color:#fff;
+}
+/* ���β˵� */
+ .tree .level_container{
+        clear:both;
+        position: relative;
+        padding-left:60px;
+        overflow: hidden;
+        margin-top:15px;
+    }
+    .tree ul.lastLevel{
+        border: 1px solid #eee;
+        border-radius: 5px;
+        overflow: hidden;
+        padding:10px;
+        margin-top:15px;
+    }
+    .tree ul.lastLevel li{
+        float: left;
+        width:216px;
+    }
+    .tree li{
+        list-style: none;
+        overflow: hidden;
+        padding:10px 0;
+    }
+    .tree .roots_switch{
+        display: inline-block;
+        width:25px;
+        height:18px;
+        background: url("../images/tree.png") no-repeat -176px -2px;
+        float:left;
+    }
+    .tree .roots_switch.close{
+        opacity: 1;
+        filter: alpha(opacity=100);
+        background: url("../images/tree.png") no-repeat -126px -2px;
+    }
+    .tree .roots_switch.close:hover{
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
+    .tree .roots_docu{
+        display: inline-block;
+        width:25px;
+        height:18px;
+        background: none;
+        float:left;
+    }
+    .tree .bottom_switch{
+        display: inline-block;
+        position: absolute;
+        left:29px;
+        top:0;
+        width:30px;
+        height:30px;
+        background: url("../images/tree.png") no-repeat -53px -220px;
+    }
+    .tree .checkbox_wrapper{
+        display: inline-block;
+        width:18px;
+        height:17px;
+        background: url("../images/tree.png") no-repeat 1px 0;
+        float: left;
+    }
+    .tree .checkbox_wrapper.on{
+        background: url("../images/tree.png") no-repeat -20px 0;
+    }
+    .tree .checkbox_wrapper .checkbox_class{
+        opacity: 0;
+        filter: alpha(opacity=0);
+        margin:2px 0 0 3px;;
+    }
+    .tree a{
+        display: inline-block;
+        height:18px;
+        float: left;
+        line-height: 18px;
+        color:#000;
+        padding-left:5px;
+        width:192px;
+        overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+    }
+    .tree a:hover{
+    	text-decoration:none;
+    }
+

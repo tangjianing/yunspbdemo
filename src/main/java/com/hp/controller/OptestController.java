@@ -1365,7 +1365,7 @@ public class OptestController {
 		
 	}
 	/**
-	 * 查询课题组是否申请过资源
+	 * 查询课题组是否申请过资源的
 	 * @param orgIds
 	 * @return
 	 */

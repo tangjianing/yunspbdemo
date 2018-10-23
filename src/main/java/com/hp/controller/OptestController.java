@@ -1103,7 +1103,7 @@ public class OptestController {
 	public @ResponseBody Map<Object, Object> joinOrgMange( HttpServletResponse resp,String orgId) throws IOException {
 		Map<Object, Object> maps = new HashMap<Object, Object>();
 		String token= ovService.joinOrgMange(orgId);
-		String url="http://159.226.245.2/cloud/ssologin?token="+token;
+		String url="https://159.226.245.2/cloud/ssologin?token="+token;
 		maps.put("url",url);
 		return maps;
 	     
@@ -1117,7 +1117,7 @@ public class OptestController {
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
-		String url="http://159.226.245.2/cloud/ssologin?token="+token;
+		String url="https://159.226.245.2/cloud/ssologin?token="+token;
 		maps.put("url",url);
 		return maps;
 	     

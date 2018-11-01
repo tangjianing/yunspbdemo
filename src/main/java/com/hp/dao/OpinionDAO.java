@@ -107,7 +107,7 @@ public interface OpinionDAO {
 
 	public List<Map<String, String>> getUsedTrend(@Param("account_id")String account_id);
 
-	public Map<String, String> showShenpiId();
+	public List<Map<String, String>> showShenpiId();
 
 	public List<Map<String, String>> ExiteAccountInfo(@Param("account_id")String account_id);
 
@@ -155,6 +155,8 @@ public interface OpinionDAO {
 			@Param("readCounterVolume")String readCounterVolume, @Param("incomingCounterVolume")String incomingCounterVolume, @Param("outgoingCounterVolume")String outgoingCounterVolume);
 
 	public List<Map<Object, Object>> userVmIdInfo(@Param("id")String id);
+
+	public List<Map<String, String>> showPersonInfoALl(@Param("account_id")String account_id);
 
 	
 	

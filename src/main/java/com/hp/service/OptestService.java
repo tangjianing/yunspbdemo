@@ -120,4 +120,6 @@ public interface OptestService {
 
 	public List<Map<Object, Object>> userVmIdInfo(String id);
 
+	public List<Map<String, String>> showPersonInfoALl(String account_id);
+
 }

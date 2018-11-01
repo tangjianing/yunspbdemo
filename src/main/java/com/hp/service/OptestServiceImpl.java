@@ -182,8 +182,20 @@ public class OptestServiceImpl implements OptestService {
 		maps.put("order_id", order_id);
 		opinionDAO.addOrder(maps);
 		String message="[订单通知]"+orgInfoName+"课题组向您提交了资源申请";
-		Map<String, String> applyInfo= opinionDAO.showShenpiId();
-		String applyId = applyInfo.get("account_id");
+		//Map<String, String> applyInfo= opinionDAO.showShenpiId();
+		List<Map<String, String>>applyInfo =  opinionDAO.showShenpiId();
+		for (int i = 0; i < applyInfo.size(); i++) {
+			 String applyId = applyInfo.get(i).get("account_id");
+			 opinionDAO.addMessage(applyId,message,order_id+"");
+			 String email1 = applyInfo.get(i).get("email");
+			 SimpleMailMessage message1 = new SimpleMailMessage();
+			 message1.setFrom("sysmail@cnic.cn");
+			 message1.setTo(email1);
+			 message1.setSubject("主题：[订单通知]");
+			 message1.setText(message);
+	         mailSender.send(message1);
+		 }
+		/*String applyId = applyInfo.get("account_id");
 		opinionDAO.addMessage(applyId,message,order_id+"");
 		String email1 = applyInfo.get("email");
 		SimpleMailMessage message1 = new SimpleMailMessage();
@@ -191,7 +203,7 @@ public class OptestServiceImpl implements OptestService {
 		message1.setTo(email1);
 		message1.setSubject("主题：[订单通知]");
 		message1.setText(message);
-        mailSender.send(message1);
+        mailSender.send(message1);*/
 		String messages="[订单通知]您申请的资源（订单编号："+order_id+"）已提交至管理员审批";
 		opinionDAO.addAppMessage(umtId,order_id,messages);
 		SimpleMailMessage message2 = new SimpleMailMessage();
@@ -246,7 +258,7 @@ public class OptestServiceImpl implements OptestService {
 			opinionDAO.insertUserInfo(account_name,account_id,email,dep_org);
 		}
 		//获取用户token
-		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -292,7 +304,7 @@ public class OptestServiceImpl implements OptestService {
 		// TODO Auto-generated method stub
 		if(valid.equals("Y")){
 			//获取用户token
-			String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+			String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 			JSONObject jsonObj = JSONObject.fromObject(param);
 			String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 			String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -563,7 +575,7 @@ public class OptestServiceImpl implements OptestService {
 		//调用蓝鲸存储删除接口
 		//accountObj.delete(account_id);
 		//获取用户token
-		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -592,7 +604,7 @@ public class OptestServiceImpl implements OptestService {
 	public void updataAccountInfo(String account_names, String account_ids,String dep_orgs,String paramss,String emails) {
 		// TODO Auto-generated method stub
 		//获取用户token
-		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -634,7 +646,7 @@ public class OptestServiceImpl implements OptestService {
 		// TODO Auto-generated method stub
 		List<Map<String, String>>adminInfo =  opinionDAO.showAdminAllInfo(orgName,adminName);
 		//获取用户token
-		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -940,12 +952,12 @@ public class OptestServiceImpl implements OptestService {
 		String token="";
 		//获取用户token
 		if(orgId.equals("")){
-			String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+			String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 			JSONObject jsonObj = JSONObject.fromObject(param);
 			String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 			token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
 		}else if(orgId.equals("joinuser")){
-			String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'yunguest', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'Private-VPC'}}}}";
+			String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'yunguest', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'Private-VPC'}}}}";
 			JSONObject jsonObj = JSONObject.fromObject(param);
 			String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 			token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -971,7 +983,7 @@ public class OptestServiceImpl implements OptestService {
 		List<Map<String, String>> ipAllInfo=new ArrayList<Map<String, String>>();
 		Map<String, String> maps = new HashMap<String, String>();
 		//获取用户token
-		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -1005,7 +1017,7 @@ public class OptestServiceImpl implements OptestService {
 		// TODO Auto-generated method stub
 		opinionDAO.updataYunPsd(new_account_name,newPsd);
 		//获取用户token
-		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -1124,5 +1136,11 @@ public class OptestServiceImpl implements OptestService {
 	public List<Map<Object, Object>> userVmIdInfo(String id) {
 		// TODO Auto-generated method stub
 		return opinionDAO.userVmIdInfo(id);
+	}
+
+	@Override
+	public List<Map<String, String>> showPersonInfoALl(String account_id) {
+		// TODO Auto-generated method stub
+		return opinionDAO.showPersonInfoALl(account_id);
 	}
 }

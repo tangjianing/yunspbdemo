@@ -1068,7 +1068,7 @@ public class OptestController {
 	public @ResponseBody String ceshi() {
 		
 		//获取用户token
-		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonObj = JSONObject.fromObject(param);
 		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
@@ -1286,7 +1286,7 @@ public class OptestController {
 	@RequestMapping(path="/getJiankong.do")
 	public @ResponseBody String getJiankong() {
 		//获取用户admintoken
-		String adminParam="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String adminParam="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonAdmin = JSONObject.fromObject(adminParam);
 		String adminBaseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String adminToken = AccountObj.getTokenService("POST",adminBaseUrl, jsonAdmin.toString());
@@ -1375,5 +1375,95 @@ public class OptestController {
 		maps.put("data", ovService.getIsResource(orgIds));
 		return maps;
 	}
-	
+	/**
+	 * 云门户提供平台总的数据
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping(path="/getAllResource.do")
+	public @ResponseBody Map<Object, Object> getAllResource() {
+		Map<Object, Object> maps = new HashMap<Object, Object>();
+		Map<Object, Object> newAll = new HashMap<Object, Object>();
+		//获取用户token
+		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		JSONObject jsonObj = JSONObject.fromObject(param);
+		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
+		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());
+		String orgKeystoneBaseUrl = "http://"+hostIp+":9000/keystone/all-limits";
+		String orgKeystoneInfo = accountObj.getUserInfoService("GET",orgKeystoneBaseUrl,null,token);
+		//JSONArray json = JSONArray.fromObject(yunParams);
+		
+		JSONObject jsonOrgKeystone = JSONObject.fromObject(orgKeystoneInfo);
+		//String limits=jsonOrgKeystone.getString("limits");
+		//JSONObject jsonOrgLimits = JSONObject.fromObject(limits);
+		
+		String allLimits=jsonOrgKeystone.getString("all_limits");
+		JSONArray jsonAllLimits = JSONArray.fromObject(allLimits);
+		int totalCoresUsed=0;
+		int totalRAMUsed=0;
+		int totallnstancesUsed=0;
+		for(int m=0;m<jsonAllLimits.size();m++){
+			JSONObject job = jsonAllLimits.getJSONObject(m); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+			
+			String absolute=job.getString("absolute");
+			JSONObject jsonOrgAbsolute = JSONObject.fromObject(absolute);
+			String projectId=jsonOrgAbsolute.getString("projectId");
+			if(!(projectId.equals("9052ae85792143ff955c35c52e8e41bd"))){
+				if(jsonOrgAbsolute.has("totalCoresUsed")){
+					 totalCoresUsed+=Integer.parseInt(jsonOrgAbsolute.getString("totalCoresUsed"));
+				}else{
+					totalCoresUsed+=0;
+				}
+				if(jsonOrgAbsolute.has("totalRAMUsed")){
+					 //totalRAMUsed=jsonOrgAbsolute.getString("totalRAMUsed");
+					 int totalRAMUsedInt = Integer.parseInt(jsonOrgAbsolute.getString("totalRAMUsed"));
+					 totalRAMUsed+=(totalRAMUsedInt/1024);
+				}else{
+					 totalRAMUsed+=0;
+				}
+				if(jsonOrgAbsolute.has("totalInstancesUsed")){
+					 totallnstancesUsed+=Integer.parseInt(jsonOrgAbsolute.getString("totalInstancesUsed"));
+				}else{
+					 totallnstancesUsed+=0;
+				}
+			}
+			
+		}
+		newAll.put("totalCoresUsed",totalCoresUsed);
+		newAll.put("totalRAMUsed",totalRAMUsed);
+		newAll.put("totallnstancesUsed",totallnstancesUsed);
+		maps.put("data", newAll);
+		maps.put("code", 200);
+		/*newAll.put("storage_used","0GB");
+		newAll.put("files","0");
+		maps.put("data", newAll);*/
+		return maps;
+	}
+	/**
+	 * 云门户提供平台个人数据
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping(path="/getMyResource.do")
+	public @ResponseBody Map<Object, Object> getMyResource(String account_id) {
+		Map<Object, Object> maps = new HashMap<Object, Object>();
+		Map<Object, Object> newAll = new HashMap<Object, Object>();
+		java.util.List<Map<String, String>> personInfoALl=  ovService.showPersonInfoALl(account_id);
+		int vmNum=0;
+		int ram=0;
+		int vcpus=0;
+		for (int i = 0; i < personInfoALl.size(); i++) {
+			 String params = personInfoALl.get(i).get("params");
+			 JSONObject json = JSONObject.fromObject(params);
+			 ram+=Integer.parseInt(json.getString("ram")+"");
+			 vcpus+=Integer.parseInt(json.getString("vcpus")+"");
+			 vmNum=vmNum+1;
+		 }
+		newAll.put("ram",ram);
+		newAll.put("vcpus",vcpus);
+		newAll.put("vmNum",vmNum);
+		maps.put("data", newAll);
+		maps.put("code", 200);
+		return maps;
+	}
 }

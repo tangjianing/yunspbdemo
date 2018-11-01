@@ -27,7 +27,7 @@ public class PrintTask {
 	
 	@Scheduled(cron = "0 0 6,14,16 * * ?")
     public void getVmAllInfo(){
-		String adminParam="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+		String adminParam="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
 		JSONObject jsonAdmin = JSONObject.fromObject(adminParam);
 		String adminBaseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
 		String adminToken = AccountObj.getTokenService("POST",adminBaseUrl, jsonAdmin.toString());
@@ -118,7 +118,7 @@ public class PrintTask {
         String newTime=format.format(cal.getTime());
         newTime=newTime.replaceAll(" ","T");
   		//获取用户token
-  		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'cloudos' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
+  		String param="{'auth': {'identity': {'methods': ['password'],'password': {'user': { 'domain': {'id': 'default' },'name': 'admin', 'password': 'CST-cloud!' }}},'scope': {'project': {'domain': {'id': 'default'},'name': 'admin'}}}}";
   		JSONObject jsonObj = JSONObject.fromObject(param);
   		String baseUrl = "http://"+hostIp+":9000/v3/auth/tokens";
   		String token = accountObj.getTokenService("POST",baseUrl, jsonObj.toString());

@@ -746,6 +746,14 @@
 	</select>
 	<!-- 获取总管理员的id -->
 	<select id="showShenpiId" resultType="map">
+		<!-- SELECT
+			a.account_id,
+			b.email
+		FROM
+			user_role_table a
+		LEFT JOIN account_table b ON a.account_id = b.uid
+		WHERE
+			role = '0' -->
 		SELECT
 			a.account_id,
 			b.email
@@ -753,7 +761,7 @@
 			user_role_table a
 		LEFT JOIN account_table b ON a.account_id = b.uid
 		WHERE
-			role = '0'
+			role = '0'	
 	</select>
 	<!-- 验证账号信息是否重复 -->
 	<select id="ExiteAccountInfo" resultType="map">
@@ -1058,6 +1066,19 @@
 			sub_resource_table a
 		WHERE
 			a.vm_id = #{id}
+	</select>
+	<!-- 查询个人的云主机数量 -->
+	<select id="showPersonInfoALl" resultType="map">
+		SELECT
+			a.account_id,
+			a.params
+		FROM
+			sub_resource_table a
+		LEFT JOIN resource_table b ON a.parent_id = b.uid
+		LEFT JOIN org_table c ON b.org_id = c.uid
+		LEFT JOIN account_table d ON c.admin = d.uid
+		WHERE
+			d.email = #{account_id}
 	</select>
 </mapper>
 
